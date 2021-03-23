@@ -10,32 +10,44 @@ int main(){
     int numerosecreto = 42;
 
     int chute;
+    int tentativas = 1;
+    
+    int  ganhou = 0;
+    while (1){
 
-    for(int i=0; i < 3; i++){
-
-        printf("O numero da tentativa eh  %d", i);
+        printf("Tentativa %d\n", tentativas);
         printf("Qual eh o seu chute?  ");
         scanf("%d", &chute);
-        printf("Seu chute foi %d \n", chute);
+
+        
+
+        if(chute < 0){
+            printf("Voce nao pode chutar numeros negativos \n");
+            continue;
+        }
 
 
         int acertou = (chute == numerosecreto);
+        int maior = chute > numerosecreto;
 
         if(acertou){
-        printf("Voce acertou!");
+            printf("\n\nParabeens acertou! *_* \n\n");
+
+            //For, pare de executar o código
+            break;
+        }
+        else if(maior){
+            printf("Seu chute foi maior que o numero secreto!\n");
         }
         else{
-
-            int maior = chute > numerosecreto;
-            if(maior){
-                printf("Seu chute foi maior que o numero secreto!\n");
-            }
-            else{
-                printf("seu chute foi menor que o numero secreto! \n");
-            }
-            printf("Voce errou! \n");
+            printf("seu chute foi menor que o numero secreto! \n");
         }
+
+        tentativas++;
+        
     }
-    Pritnf("Fim de Jogo!");
+
+    printf("Fim de Jogo! \n");
+    printf("Voce acertou em %d de tentativas\n", tentativas);
 
 }   
