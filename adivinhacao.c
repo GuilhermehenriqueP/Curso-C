@@ -36,5 +36,6 @@ int main(){
             printf("Voce errou! \n");
         }
     }
+    Pritnf("Fim de Jogo!");
 
 }   
