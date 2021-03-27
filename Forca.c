@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 #include "forca.h"
 
 void abertura();
@@ -39,8 +41,25 @@ int jachutou(char letra){
     return achou;
 }
 void escolhepalavra(){
+    FILE* f;
 
-    sprintf(palavrasecreta, "MELANCIA");
+    f = fopen("palavras.txt", "r");
+    if(f == 0){
+        printf("Desculpe, banco de dados não disponivel\n\n");
+        exit(1);
+    }
+
+    int qtdpalavras;
+    fscanf(f, "%d", &qtdpalavras);
+
+    srand(time(0));
+    int randomico = rand() % qtdpalavras;
+
+    for (int i = 0; i <= randomico; i++){
+        fscanf(f, "%s", palavrasecreta);
+    }
+    
+    fclose(f);
 }
 int enforcou(){
     int erros = 0;
