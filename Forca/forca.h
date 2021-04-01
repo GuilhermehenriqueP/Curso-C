@@ -1,3 +1,6 @@
+#define TAMANHO_PALAVRA 20
+
+int chuteserrados();
 void abertura();
 void chuta();
 int jachutou(char letra);
