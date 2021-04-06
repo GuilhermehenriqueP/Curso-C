@@ -1,101 +1,51 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "pacman.h"
+#include "mapa.h"
 
 //matriz de 5 por 10
 MAPA m;
+POSICAO heroi;
 
-void liberamapa()
-{
-    for (int i = 0; i < m.linhas; i++)
-    {
-        free(m.matriz[i]);
-    }
-    free(m.matriz);
-}
-void alocamapa()
-{
-    m.matriz = malloc(sizeof(char *) * m.linhas);
-    for (int i = 0; i < m.linhas; i++)
-    {
-        m.matriz[i] = malloc(sizeof(char *) * (m.colunas + 1));
-    }
-}
-void lemapa()
-{
-    FILE *f;
-    f = fopen("mapa.txt", "r");
-    if (f == 0)
-    {
-        printf("Erro na leitura do mapa \n");
-        exit(1);
-    }
-    fscanf(f, "%d %d", &m.linhas, &m.colunas);
 
-    alocamapa();
-
-    for (int i = 0; i < 5; i++)
-    {
-        fscanf(f, "%s", m.matriz[i]);
-    }
-
-    fclose(f);
-}
 int acabou()
 {
     return 0;
 }
 void move(char direcao)
 {
-    int x;
-    int y;
-
-    // Acha a posição do personagem
-    for (int i = 0; i < m.linhas; i++)
-    {
-        for (int j = 0; j < m.colunas; j++)
-        {
-            if (m.matriz[i][j] == '@')
-            {
-                x = i;
-                y = j;
-                break;
-            }
-        }
-    }
+    m.matriz[heroi.x][heroi.y] = '.';
 
     switch(direcao){
         case 'a':
-            m.matriz[x][y-1] = '@';
+            m.matriz[heroi.x][heroi.y-1] = '@';
+            heroi.y--;
             break;
         case 'w':
-            m.matriz[x-1][y] = '@';
+            m.matriz[heroi.x-1][heroi.y] = '@';
+            heroi.x++;
             break;
         case 's':
-            m.matriz[x+1][y] = '@';
+            m.matriz[heroi.x+1][heroi.y] = '@';
+            heroi.x++;
             break;
         case 'd':
-            m.matriz[x][y+1] = '@';
+            m.matriz[heroi.x][heroi.y+1] = '@';
+            heroi.y++;
             break;
         
     }
-    m.matriz[x][y] = '.';
+    
 }
 
-void imprimemapa()
-{
-    for (int i = 0; i < 5; i++)
-    {
-        printf("%s\n", m.matriz[i]);
-    }
-}
 int main()
 {
 
-    lemapa();
+    lemapa(&m);
+    encontramapa(&m, &heroi, '@');
     do
     {
-        imprimemapa();
+        imprimemapa(&m);
 
         char comando;
         scanf(" %c", &comando);
@@ -103,5 +53,5 @@ int main()
 
     } while (!acabou());
 
-    liberamapa();
+    liberamapa(&m);
 }
