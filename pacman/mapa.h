@@ -1,19 +1,21 @@
-struct mapa
+#define HEROI '@'
+#define VAZIO '.'
+#define PAREDE_VERTICAL '|'
+#define PAREDE_HORINZONTAL '-'
+#define FANTASMA 'F'
+
+typedef struct mapa
 {
     char ** matriz;
     int linhas;
     int colunas;
-};
+}  MAPA;
 
-typedef struct mapa MAPA;
-
-struct posicao
+typedef struct posicao
 {
     int x;
     int y;
-};
-
-typedef struct posicao POSICAO;
+} POSICAO;
 
 
 
@@ -25,6 +27,8 @@ void encontramapa(MAPA* m, POSICAO*p, char c);
 int ehvazia(MAPA *m, int x, int y);
 int ehvalida(MAPA *m, int x, int y);
 void andanomapa(MAPA* m, int xorigem, int yorigem, int xdestino, int ydestino );
+void copiamapa(MAPA* destino, MAPA* origem);
+
 
 
 

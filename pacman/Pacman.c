@@ -24,16 +24,16 @@ void move(char direcao)
     int proximoy = heroi.y;
 
     switch(direcao){
-        case 'a':
+        case ESQUERDA:
             proximoy--;
             break;
-        case 'w':
+        case CIMA:
             proximox--;
             break;
-        case 's':
+        case BAIXO:
             proximox++;
             break;
-        case 'd':
+        case DIREITA:
             proximoy++;
             break;     
     }
@@ -53,12 +53,28 @@ void move(char direcao)
     
     
 }
+void fantasmas(){
 
-int main()
-{
+    MAPA copia;
+
+    copiamapa(&copia, &m);
+    for(int i = 0; i < copia.linhas; i++){
+        for(int j = 0; j< copia.colunas; j++){
+            if(copia.matriz[i][j] == FANTASMA){
+                if(ehvalida(&m, i ,j+1) && ehvazia(&m, i, j+1)){
+                    andanomapa(&m, i, j , i, j+1);
+                }
+            }
+        }
+    }
+    liberamapa(&copia);
+}
+
+
+int main(){
 
     lemapa(&m);
-    encontramapa(&m, &heroi, '@');
+    encontramapa(&m, &heroi, HEROI);
     do
     {
         imprimemapa(&m);
@@ -66,6 +82,7 @@ int main()
         char comando;
         scanf(" %c", &comando);
         move(comando);
+        fantasmas();
 
     } while (!acabou());
 
