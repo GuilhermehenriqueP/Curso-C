@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "pacman.h"
+#include "time.h"
 #include "mapa.h"
 
 //matriz de 5 por 10
@@ -8,9 +9,10 @@ MAPA m;
 POSICAO heroi;
 
 
-int acabou()
-{
-    return 0;
+int acabou(){
+    POSICAO pos;
+    int fogefogenomapa = encontramapa(&m, &pos, HEROI);
+    return !fogefogenomapa;
 }
 int ehdirecao(char direcao){
     return direcao == 'a' || direcao == 'w' || direcao == 's' || direcao == 'd';
@@ -38,12 +40,9 @@ void move(char direcao)
             break;     
     }
     
-    if (!ehvazia(&m, proximox,proximoy))
+    if (!podeandar(&m, HEROI,proximox,proximoy))
         return;
-    
-    
-    if (!ehvalida(&m, proximox,proximoy))
-        return;
+
 
     
 
@@ -53,6 +52,26 @@ void move(char direcao)
     
     
 }
+int praondefantasmavai(int xatual, int yatual, int * xdestino, int * ydestino){
+        int opcoes[4][2] = {
+            {xatual, yatual+1},
+            {xatual+1, yatual},
+            {xatual, yatual -1},
+            {xatual -1, yatual}
+        };
+        srand(time(0));
+        for(int i = 0; i < 10; i++){
+
+            int posicao = rand() % 4;
+
+            if(podeandar(&m, FANTASMA, opcoes[posicao][0], opcoes[posicao][0])){
+                *xdestino = opcoes[posicao][0];
+                *ydestino = opcoes[posicao][0];
+                return 1;
+            }
+        }
+        return 0;
+}
 void fantasmas(){
 
     MAPA copia;
@@ -61,9 +80,17 @@ void fantasmas(){
     for(int i = 0; i < copia.linhas; i++){
         for(int j = 0; j< copia.colunas; j++){
             if(copia.matriz[i][j] == FANTASMA){
-                if(ehvalida(&m, i ,j+1) && ehvazia(&m, i, j+1)){
-                    andanomapa(&m, i, j , i, j+1);
+
+                int xdestino;
+                int ydestino;
+
+                int encontrou = praondefantasmavai(i,j, &xdestino, &ydestino);
+
+                if (encontrou)
+                {
+                    andanomapa(&m, i, j , xdestino, ydestino);
                 }
+                
             }
         }
     }
