@@ -7,6 +7,7 @@
 //matriz de 5 por 10
 MAPA m;
 POSICAO heroi;
+int tempilula = 0;
 
 
 int acabou(){
@@ -43,7 +44,10 @@ void move(char direcao)
     if (!podeandar(&m, HEROI,proximox,proximoy))
         return;
 
-
+    if (ehpersonagem(&m, PILULA, proximox,proximoy)){
+        tempilula = 1;
+    }
+    
     
 
     andanomapa(&m, heroi.x, heroi.y, proximox,proximoy);
@@ -96,6 +100,29 @@ void fantasmas(){
     }
     liberamapa(&copia);
 }
+void explodepilula(){
+    explodepilula2(heroi.x, heroi.y,0, 1,3);
+    explodepilula2(heroi.x, heroi.y,0, -1,3);
+    explodepilula2(heroi.x, heroi.y,1, 0,3);
+    explodepilula2(heroi.x, heroi.y,-1, 1,3);
+    printf("explodiu\n");
+}
+void explodepilula2(int x, int y, int somax, int somay,int qtda){
+
+        if(qtda == 0) return;
+
+        int novox = x + somax;
+        int novoy = y + somay;
+
+        if(!ehvalida(&m, novox,novoy)) return;
+        if(ehparede(&m, novox,novoy)) return;
+
+        m.matriz[novox][novoy] == '.';
+        explodepilula2(novox, novoy, somax, somay, qtda-1);
+
+    
+}
+
 
 
 int main(){
@@ -104,11 +131,13 @@ int main(){
     encontramapa(&m, &heroi, HEROI);
     do
     {
+        printf("Tem pilula: %s\n", (tempilula ? "SIM": "NAO"));
         imprimemapa(&m);
 
         char comando;
         scanf(" %c", &comando);
         move(comando);
+        if(comando  == BOMBA) explodepilula();
         fantasmas();
 
     } while (!acabou());
