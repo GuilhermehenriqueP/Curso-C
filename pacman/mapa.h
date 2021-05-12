@@ -1,3 +1,7 @@
+#ifndef _MAPA_H_
+#define _MAPA_H_
+
+
 #define HEROI '@'
 #define VAZIO '.'
 #define PAREDE_VERTICAL '|'
@@ -35,4 +39,4 @@ int ehpersonagem(MAPA * m, char personagem, int x, int y);
 
 
 
-
+#endif

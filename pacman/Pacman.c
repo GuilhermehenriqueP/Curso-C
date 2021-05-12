@@ -3,6 +3,7 @@
 #include "pacman.h"
 #include "time.h"
 #include "mapa.h"
+#include "ui.h"
 
 //matriz de 5 por 10
 MAPA m;
